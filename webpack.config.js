@@ -6,6 +6,11 @@ module.exports = {
   output: {
     filename: 'react-bundle.js',
   },
+  module: {
+    rules : [
+      { test: /\.js?/, loader: 'bable-loader', exclude: /node_modules/ }
+    ]
+  },
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()],
