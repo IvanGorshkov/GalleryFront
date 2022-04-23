@@ -65,6 +65,21 @@ export default function CreateArt() {
 
           http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
         }
+
+        const formData = new FormData();
+        video.forEach((i) => {
+          formData.append(
+            "video",
+            i.file,
+            i.file.name
+          );
+          formData.append(
+            "video_size",
+            `${i.videoWidth} x ${i.videoHeight}`
+            )
+        })
+        http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
+
       }).catch(()=> {
         action.setSubmitting(false)
       })
