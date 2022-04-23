@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: react-bundle
-          path: ./build/* # ./react-bundle, ./react-bundle/*, react-bundle do not work
+          path: ./build/*
           if-no-files-found: error
   deploy:
     runs-on: ubuntu-latest
@@ -48,11 +48,11 @@ jobs:
           name: react-bundle
 
       - name: Transfer build files to server
-        uses: appleboy/scp-action@v0.0.10
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "build/*"
+          source: "react-bundle/*"
           target: "/home/ubuntu/front/GalleryFront/build"
           strip_components: 1

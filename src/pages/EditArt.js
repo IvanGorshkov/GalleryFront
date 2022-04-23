@@ -20,6 +20,7 @@ import ImagePicker from '../components/ImagePicker';
 import { storage } from '../utils/localStorage';
 import { http } from '../utils/http';
 import { randomId } from '@mui/x-data-grid-generator';
+import VideoPicker from '../components/VideoPicker';
 
 export default function EditArt() {
   const formik = useFormik({
@@ -92,6 +93,7 @@ export default function EditArt() {
         index += 1
         return {url: val, index: index}
       }))
+      setVideo(value.data.video)
     })
 
   }, []) // <-- empty dependency array
@@ -102,7 +104,9 @@ export default function EditArt() {
   let [val, setVal] = useState({...getFieldProps('spetification')}.value)
 
   const [images, setimages] = useState([]);
+  const [video, setVideo] = useState([]);
   const [imageDidChange, setimageDidChange] = useState(false);
+  const [videoDidChange, setvideoDidChange] = useState(false);
 
   return (
     <Page title="Редактировать картину">
@@ -150,6 +154,11 @@ export default function EditArt() {
                   <ImagePicker images={images} onChange={(value)=> {
                     setimages(value)
                     setimageDidChange(true)
+                  }}/>
+
+                  <VideoPicker video={video} onChange={(value)=> {
+                    setVideo(value)
+                    setvideoDidChange(true)
                   }}/>
 
                   <FormControlLabel control={<Switch checked={show} onChange={(e) => {
