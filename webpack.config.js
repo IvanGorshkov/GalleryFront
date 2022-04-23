@@ -5,4 +5,5 @@ module.exports = {
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
+  mode: 'production'
 };
