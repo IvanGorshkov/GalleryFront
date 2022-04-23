@@ -65,6 +65,24 @@ class Http {
       data: json
     };
   }
+
+  /** *
+   * Ajax delete request
+   * @param {string} url - post request url
+   * @param {any} data - post request data
+   * @param {boolean} photo - isPhoto?
+   * @returns {Promise<{data: any, status: number}>}
+   */
+  async delete(url, data) {
+    const response = await fetch(this.__ajax(url, 'DELETE', JSON.stringify(data)));
+    const isJson = response.headers.get('content-type')?.includes('application/json');
+    const json = isJson && await response.json();
+
+    return {
+      status: response.status,
+      data: json
+    };
+  }
 }
 
 export const http = new Http();
