@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./react
     steps:
       - name: Install Node
         uses: actions/setup-node@v1
@@ -39,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: react-bundle
-          path: react/react-bundle # ./react-bundle, ./react-bundle/*, react-bundle do not work
+          path: ./build/* # ./react-bundle, ./react-bundle/*, react-bundle do not work
           if-no-files-found: error
   deploy:
     runs-on: ubuntu-latest
