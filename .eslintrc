@@ -1,0 +1,27 @@
+{
+  "root": true,
+  "env": {
+    "browser": false,
+    "node": false
+  },
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": [
+    "prettier",
+    "react",
+    "react-hooks"
+  ],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "requireConfigFile": false,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "impliedStrict": true
+    }
+  }
+}
