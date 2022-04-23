@@ -32,5 +32,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: "build/*"
-          target: "/home/ubuntu/frontend_2021_1_YSNP/dist"
+          target: "/home/ubuntu/front/GalleryFront/build"
           strip_components: 1
