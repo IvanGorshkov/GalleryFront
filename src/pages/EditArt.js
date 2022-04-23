@@ -93,7 +93,10 @@ export default function EditArt() {
         index += 1
         return {url: val, index: index}
       }))
-      setVideo(value.data.video)
+      setVideo(["http://95.163.213.222/videos/" + value.data.video].map((val) => {
+        index += 1
+        return {url: val, index: index}
+      }))
     })
 
   }, []) // <-- empty dependency array
