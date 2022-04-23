@@ -56,7 +56,7 @@ export default function EditArt() {
               i.file.name
             );
           })
-          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
+          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
         }
       }).catch(()=> {
         action.setSubmitting(false)
@@ -82,9 +82,11 @@ export default function EditArt() {
       formik.setFieldValue("h", value.data.pictureSize.height, false)
       formik.setFieldValue("w", value.data.pictureSize.width, false)
       setShow(value.data.show)
-      setVal(value.data.info.map((v) => {
-        return {id: randomId(), type: v.type, value: v.value}
-      }))
+      if( value.data.info !== undefined ){
+        setVal(value.data.info.map((v) => {
+          return { id: randomId(), type: v.type, value: v.value }
+        }))
+      }
       let index = -1
       setimages(value.data.picture.split(",").map((val) => {
         index += 1

@@ -78,7 +78,7 @@ export default function CreateArt() {
             `${i.videoWidth} x ${i.videoHeight}`
             )
         })
-        http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
+        http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
 
       }).catch(()=> {
         action.setSubmitting(false)
