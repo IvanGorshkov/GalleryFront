@@ -6,12 +6,13 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Gallery from './pages/Gallery';
-import Products from './pages/Art';
+import Products from './pages/art/Art';
 import Blog from './pages/Blog';
-import User from './pages/User';
+import Exhibition from './pages/Exhibition';
 import NotFound from './pages/Page404';
-import CreateArt from './pages/CreateArt';
-import EditArt from './pages/EditArt';
+import CreateArt from './pages/art/CreateArt';
+import EditArt from './pages/art/EditArt';
+import CreateExhibition from './pages/CreateExhibition';
 
 // ----------------------------------------------------------------------
 
@@ -22,9 +23,9 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'gallery', element: <Gallery /> },
-        { path: 'user', element: <User /> },
-        { path: 'newexhibition', element: <Products /> },
+        { path: 'ehibition', element: <Exhibition /> },
         { path: 'new_art', element: <CreateArt /> },
+        { path: 'new_ehibition', element: <CreateExhibition /> },
         { path: 'edit_art/:id', element: <EditArt /> },
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> }

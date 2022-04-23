@@ -48,7 +48,8 @@ export default function Gallery() {
           console.log(images[0])
 
           images.forEach((i) => {
-            if (i.url === undefined) {
+            console.log(i)
+            if (i.file === undefined) {
               return
             }
             formData.append(
@@ -71,9 +72,11 @@ export default function Gallery() {
         formik.setFieldValue("id", value.data.id, false)
         formik.setFieldValue("description", value.data.descr, false)
         setShow(value.data.show)
-        setVal(value.data.info.map((v) => {
-          return {id: randomId(), type: v.type, value: v.value}
-        }))
+        if(value.data.info !== undefined ){
+          setVal(value.data.info.map((v) => {
+            return { id: randomId(), type: v.type, value: v.value }
+          }))
+        }
 
         let index = -1
         setimages(value.data.picture.split(",").map((val) => {

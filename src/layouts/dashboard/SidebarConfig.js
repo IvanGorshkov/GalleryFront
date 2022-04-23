@@ -13,7 +13,7 @@ const sidebarConfig = [
   },
   {
     title: 'Выставки',
-    path: '/dashboard/user',
+    path: '/dashboard/ehibition',
     icon: getIcon('eva:image-outline')
   },
   {

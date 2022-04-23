@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Stack, Typography } from '@mui/material';
 // components
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import Page from '../components/Page';
+import Page from '../../components/Page';
 import {
   ProductList,
-} from '../sections/@dashboard/products';
+} from '../../sections/@dashboard/products';
 //
-import PRODUCTS from '../_mocks_/products';
-import { storage } from '../utils/localStorage';
-import Iconify from '../components/Iconify';
-import { http } from '../utils/http';
+import PRODUCTS from '../../_mocks_/products';
+import { storage } from '../../utils/localStorage';
+import Iconify from '../../components/Iconify';
+import { http } from '../../utils/http';
 import { randomId } from '@mui/x-data-grid-generator';
 
 // ----------------------------------------------------------------------
