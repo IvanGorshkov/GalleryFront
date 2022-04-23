@@ -56,7 +56,7 @@ export default function EditArt() {
               i.file.name
             );
           })
-          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
+          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
         }
       }).catch(()=> {
         action.setSubmitting(false)

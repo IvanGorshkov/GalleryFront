@@ -8,14 +8,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
-      - uses: actions/checkout@v1
-      - run: npm install
-      - run: npm run build
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login Sentry
+        uses: mathieu-bour/setup-sentry-cli@1.1.0
+        with:
+          token: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          organization: ${{ secrets.SENTRY_ORG }}
+          project: ${{ secrets.SENTRY_PROJECT }}
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: npm run build
+
       - name: Upload build result
         uses: actions/upload-artifact@v1
         with:
