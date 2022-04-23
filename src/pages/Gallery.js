@@ -22,6 +22,7 @@ import FullFeaturedCrudGrid from '../components/MyDataGrid';
 import ImagePicker from '../components/ImagePicker';
 import { storage } from '../utils/localStorage';
 import { http } from '../utils/http';
+import NotificationsPopover from '../layouts/dashboard/NotificationsPopover';
 
 export default function Gallery() {
   const formik = useFormik({
@@ -46,12 +47,18 @@ export default function Gallery() {
 
           console.log(images[0])
 
-          formData.append(
-            "image",
-            images[0].file,
-            images[0].file.name
-          );
-            http.post(`http://95.163.213.222/api/v1/museums/${values.id}/images`, formData, true)
+          images.forEach((i) => {
+            if (i.url === undefined) {
+              return
+            }
+            formData.append(
+              "image",
+              i.file,
+              i.file.name
+            );
+          })
+
+          http.post(`http://95.163.213.222/api/v1/museums/${values.id}/images`, formData, true)
         }
       })
     }
@@ -68,7 +75,11 @@ export default function Gallery() {
           return {id: randomId(), type: v.type, value: v.value}
         }))
 
-        setimages([value.data.picture])
+        let index = -1
+        setimages(value.data.picture.split(",").map((val) => {
+          index += 1
+          return {url: val, index: index}
+        }))
       })
     const isLogin = storage.get("jwt");
     if (isLogin == null) {

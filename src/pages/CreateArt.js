@@ -24,6 +24,7 @@ import FullFeaturedCrudGrid from '../components/MyDataGrid';
 import ImagePicker from '../components/ImagePicker';
 import { storage } from '../utils/localStorage';
 import { http } from '../utils/http';
+import VideoPicker from '../components/VideoPicker';
 
 export default function CreateArt() {
   const formik = useFormik({
@@ -51,11 +52,17 @@ export default function CreateArt() {
         if (imageDidChange) {
           const formData = new FormData();
 
-          formData.append(
-            "image",
-            images[0].file,
-            images[0].file.name
-          );
+          images.forEach((i) => {
+            if (i.url === undefined) {
+              return
+            }
+            formData.append(
+              "image",
+              i.file,
+              i.file.name
+            );
+          })
+
           http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
         }
       }).catch(()=> {
@@ -77,6 +84,7 @@ export default function CreateArt() {
   let [val, setVal] = useState({...getFieldProps('spetification')}.value)
 
   const [images, setimages] = useState([]);
+  const [video, setVideo] = useState([]);
   const [imageDidChange, setimageDidChange] = useState(false);
 
   return (
@@ -125,6 +133,10 @@ export default function CreateArt() {
                   <ImagePicker images={images} onChange={(value)=> {
                     setimages(value)
                     setimageDidChange(true)
+                  }}/>
+
+                  <VideoPicker video={video} onChange={(value)=> {
+                    setVideo(value)
                   }}/>
 
                   <FormControlLabel

@@ -7,7 +7,7 @@ import {
   TextField,
   Card,
   Switch,
-  FormControlLabel
+  FormControlLabel, Button
 } from '@mui/material';
 // components
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -46,7 +46,6 @@ export default function EditArt() {
         action.setSubmitting(false)
         if (imageDidChange) {
           const formData = new FormData();
-          alert(imageDidChange)
           images.forEach((i) => {
             if (i.url === undefined) {
               return
@@ -65,6 +64,9 @@ export default function EditArt() {
     }
   });
 
+  const deleteHandler = (() => {
+    console.log("alert")
+  })
   const navigate = useNavigate();
   useEffect(()=>{
     const isLogin = storage.get("jwt");
@@ -83,8 +85,11 @@ export default function EditArt() {
       setVal(value.data.info.map((v) => {
         return {id: randomId(), type: v.type, value: v.value}
       }))
-
-      setimages(value.data.picture.split(","))
+      let index = -1
+      setimages(value.data.picture.split(",").map((val) => {
+        index += 1
+        return {url: val, index: index}
+      }))
     })
 
   }, []) // <-- empty dependency array
@@ -150,14 +155,24 @@ export default function EditArt() {
                     http.post(`http://95.163.213.222/api/v1/pictures/${location.pathname.split('/')[location.pathname.split('/').length - 1]}/public`, {})
                   }}/>} label="Опубликован" />
 
-                  <LoadingButton
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                  >
-                    Сохранить
-                  </LoadingButton>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <LoadingButton
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                    >
+                      Сохранить
+                    </LoadingButton>
+                    <Button
+                      size="large"
+                      color={"error"}
+                      variant="contained"
+                      onClick={deleteHandler}
+                    >
+                      Удалить
+                    </Button>
+                  </Stack>
                 </Stack>
               </Box>
             </Card>

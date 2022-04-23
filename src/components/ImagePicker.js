@@ -48,8 +48,7 @@ export default function ImagePicker(state) {
   }
 
   function deleteImg(indice) {
-    // console.log('borrar img ' + indice);
-
+    console.log('borrar img ' + indice);
     const newImgs = state.images.filter((element) => element.index !== indice);
     console.log(newImgs);
     state.onChange(newImgs);

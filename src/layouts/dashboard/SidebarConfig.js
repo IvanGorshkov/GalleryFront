@@ -9,17 +9,17 @@ const sidebarConfig = [
   {
     title: 'Музей',
     path: '/dashboard/gallery',
-    icon: getIcon('eva:pie-chart-2-fill')
+    icon: getIcon('eva:home-outline')
   },
   {
     title: 'Выставки',
     path: '/dashboard/user',
-    icon: getIcon('eva:people-fill')
+    icon: getIcon('eva:image-outline')
   },
   {
     title: 'Картины',
     path: '/dashboard/products',
-    icon: getIcon('eva:shopping-bag-fill')
+    icon: getIcon('eva:color-palette-outline')
   }
 ];
 
