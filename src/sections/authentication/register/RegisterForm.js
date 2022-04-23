@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import React from 'react';
 // material
@@ -16,11 +16,14 @@ import { useNavigate } from 'react-router-dom';
 export default function RegisterForm() {
   const navigate = useNavigate();
 
-  const isLogin = storage.get("jwt");
-  console.log(isLogin)
-  if (isLogin !== null) {
-    navigate('/dashboard/gallery', { replace: true });
-  }
+  useEffect(()=>{
+    const isLogin = storage.get("jwt");
+    console.log(isLogin)
+    if (isLogin !== null) {
+      navigate('/dashboard/gallery', { replace: true });
+    }
+  }, []) // <-- empty dependency array
+
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({

@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 // material
@@ -17,19 +17,19 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/Iconify';
 import { http } from '../../../utils/http';
 import { storage } from '../../../utils/localStorage';
+import { randomId } from '@mui/x-data-grid-generator';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
-  const isLogin = storage.get("jwt");
-  console.log(isLogin)
-  if (isLogin !== null) {
-    navigate('/dashboard/gallery', { replace: true });
-  }
-
+  useEffect(()=>{
+    const isLogin = storage.get("jwt");
+    if (isLogin !== null) {
+      navigate('/dashboard/gallery', { replace: true });
+    }
+  }, []) // <-- empty dependency array
   const LoginSchema = Yup.object().shape({
     login: Yup.string().required('Поле логин обязательно'),
     password: Yup.string().required('Поле пароль обязательно')
