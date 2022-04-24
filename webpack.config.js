@@ -8,7 +8,22 @@ module.exports = {
   },
   module: {
     rules : [
-      { test: /\.js?/, loader: 'babel-loader', exclude: /node_modules/ }
+      { test: /\.js?/, loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.(sass|css|scss)$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: () => [
+                require("autoprefixer")()
+              ],
+            },
+          },
+          'sass-loader',
+        ]
+      },
     ]
   },
   optimization: {
