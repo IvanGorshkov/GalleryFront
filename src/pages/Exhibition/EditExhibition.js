@@ -137,10 +137,12 @@ export default function EditExhibition() {
         }))
       }
       let index = -1
-      setimages(value.data.picture.split(",").map((val) => {
-        index += 1
-        return {url: val, index: index}
-      }))
+      if(value.data.picture !== undefined ) {
+        setimages(value.data.picture.split(",").map((val) => {
+          index += 1
+          return { url: val, index: index }
+        }))
+      }
     })
 
   }, []) // <-- empty dependency array
