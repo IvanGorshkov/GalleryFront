@@ -71,7 +71,7 @@ export default function Gallery() {
         formik.setFieldValue("name", value.data.name, false)
         formik.setFieldValue("id", value.data.id, false)
         formik.setFieldValue("description", value.data.descr, false)
-        setShow(value.data.show)
+        setShow(value.data.show === 1)
         if(value.data.info !== undefined ){
           setVal(value.data.info.map((v) => {
             return { id: randomId(), type: v.type, value: v.value }

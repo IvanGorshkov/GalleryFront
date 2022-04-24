@@ -8,11 +8,12 @@ import Register from './pages/Register';
 import Gallery from './pages/Gallery';
 import Products from './pages/art/Art';
 import Blog from './pages/Blog';
-import Exhibition from './pages/Exhibition';
+import Exhibition from './pages/Exhibition/Exhibition';
 import NotFound from './pages/Page404';
 import CreateArt from './pages/art/CreateArt';
 import EditArt from './pages/art/EditArt';
-import CreateExhibition from './pages/CreateExhibition';
+import CreateExhibition from './pages/Exhibition/CreateExhibition';
+import EditExhibition from './pages/Exhibition/EditExhibition';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +28,7 @@ export default function Router() {
         { path: 'new_art', element: <CreateArt /> },
         { path: 'new_exhibition', element: <CreateExhibition /> },
         { path: 'edit_art/:id', element: <EditArt /> },
+        { path: 'edit_exhibition/:id', element: <EditExhibition /> },
         { path: 'arts', element: <Products /> },
         { path: 'blog', element: <Blog /> }
       ]

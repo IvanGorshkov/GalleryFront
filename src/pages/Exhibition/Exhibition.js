@@ -19,18 +19,18 @@ import {
   TablePagination
 } from '@mui/material';
 // components
-import Page from '../components/Page';
-import Label from '../components/Label';
-import Scrollbar from '../components/Scrollbar';
-import Iconify from '../components/Iconify';
-import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import Page from '../../components/Page';
+import Label from '../../components/Label';
+import Scrollbar from '../../components/Scrollbar';
+import Iconify from '../../components/Iconify';
+import SearchNotFound from '../../components/SearchNotFound';
+import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user';
 //
-import USERLIST from '../_mocks_/user';
-import { storage } from '../utils/localStorage';
-import { http } from '../utils/http';
+import USERLIST from '../../_mocks_/user';
+import { storage } from '../../utils/localStorage';
+import { http } from '../../utils/http';
 import { randomId } from '@mui/x-data-grid-generator';
-import { ProductList } from '../sections/@dashboard/products';
+import { ProductList } from '../../sections/@dashboard/products';
 
 export default function Exhibition() {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ export default function Exhibition() {
           </Button>
         </Stack>
 
-        <ProductList products={val} />
+        <ProductList products={val} url={"/dashboard/edit_exhibition"} />
       </Container>
     </Page>
   );

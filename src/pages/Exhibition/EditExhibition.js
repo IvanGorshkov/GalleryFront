@@ -9,7 +9,7 @@ import {
   IconButton,
   Card,
   Switch,
-  FormControlLabel, TableContainer, Table, TableBody, TableRow, TableCell, Checkbox, Avatar, TablePagination
+  FormControlLabel, TableContainer, Table, TableBody, TableRow, TableCell, Checkbox, Avatar, TablePagination, Button
 } from '@mui/material';
 // components
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -19,18 +19,18 @@ import {
 } from '@mui/x-data-grid-generator';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Page from '../components/Page';
-import FullFeaturedCrudGrid from '../components/MyDataGrid';
-import ImagePicker from '../components/ImagePicker';
-import DragableList from '../components/DragableList';
-import { storage } from '../utils/localStorage';
-import { http } from '../utils/http';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
-import Scrollbar from '../components/Scrollbar';
-import USERLIST from '../_mocks_/user';
-import Label from '../components/Label';
+import Page from '../../components/Page';
+import FullFeaturedCrudGrid from '../../components/MyDataGrid';
+import ImagePicker from '../../components/ImagePicker';
+import DragableList from '../../components/DragableList';
+import { storage } from '../../utils/localStorage';
+import { http } from '../../utils/http';
+import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user';
+import Scrollbar from '../../components/Scrollbar';
+import USERLIST from '../../_mocks_/user';
+import Label from '../../components/Label';
 import { sentenceCase } from 'change-case';
-import SearchNotFound from '../components/SearchNotFound';
+import SearchNotFound from '../../components/SearchNotFound';
 import { filter } from 'lodash';
 
 // ----------------------------------------------------------------------
@@ -76,7 +76,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 
-export default function CreateExhibition() {
+export default function EditExhibition() {
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -85,7 +85,7 @@ export default function CreateExhibition() {
       spetification: [],
     },
     onSubmit: (values, action) => {
-      http.post(`http://95.163.213.222/api/v1/exhibitions`, {
+      http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}`, {
         name: values.name,
         descr: values.description,
         info: val.map((data) => {
@@ -126,11 +126,30 @@ export default function CreateExhibition() {
     if (isLogin == null) {
       navigate('/login', { replace: true });
     }
+    http.get(`http://95.163.213.222/api/v1/exhibitions/${location.pathname.split('/')[location.pathname.split('/').length - 1]}`).then(value => {
+      formik.setFieldValue("name", value.data.name, false)
+      formik.setFieldValue("id", value.data.id, false)
+      formik.setFieldValue("description", value.data.descr, false)
+      setShow(value.data.show === 1)
+      if( value.data.info !== undefined ){
+        setVal(value.data.info.map((v) => {
+          return { id: randomId(), type: v.type, value: v.value }
+        }))
+      }
+      let index = -1
+      setimages(value.data.picture.split(",").map((val) => {
+        index += 1
+        return {url: val, index: index}
+      }))
+    })
+
   }, []) // <-- empty dependency array
+
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
   let [val, setVal] = useState({...getFieldProps('spetification')}.value)
+  let [show, setShow] = useState(false)
 
   const [images, setimages] = useState([]);
   const [imageDidChange, setimageDidChange] = useState(false);
@@ -196,16 +215,21 @@ export default function CreateExhibition() {
   const isUserNotFound = filteredUsers.length === 0;
 
 
+  const deleteHandler = (() => {
+    http.delete(`http://95.163.213.222/api/v1/pictures/${values.id}`).then(()=> {
+      navigate('/dashboard/arts', { replace: true })
+    })
+  })
 
   return (
-    <Page title="Новая выставка">
+    <Page title="Редактировать выставку">
       <Container maxWidth="xl">
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Card>
               <Box sx={{ p: 1 }}>
                 <Stack spacing={2}>
-                  <Typography variant="h4">Новая выставка</Typography>
+                  <Typography variant="h4">Редактировать выставку</Typography>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                     <TextField
                       fullWidth
@@ -327,14 +351,29 @@ export default function CreateExhibition() {
                     setimageDidChange(true)
                   }}/>
 
-                  <LoadingButton
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                  >
-                    Сохранить
-                  </LoadingButton>
+                  <FormControlLabel control={<Switch checked={show} onChange={(e) => {
+                    http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}/public`, {})
+                    setShow(e.target.checked)
+                  }}/>} label="Опубликован" />
+
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <LoadingButton
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                    >
+                      Сохранить
+                    </LoadingButton>
+                    <Button
+                      size="large"
+                      color={"error"}
+                      variant="contained"
+                      onClick={deleteHandler}
+                    >
+                      Удалить
+                    </Button>
+                  </Stack>
                 </Stack>
               </Box>
             </Card>

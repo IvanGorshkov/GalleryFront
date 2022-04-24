@@ -45,7 +45,7 @@ export default function EcommerceShop() {
             Добавить картину
           </Button>
         </Stack>
-        <ProductList products={val} />
+        <ProductList products={val} url={"/dashboard/edit_art"}/>
       </Container>
     </Page>
   );

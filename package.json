@@ -81,6 +81,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@mui/x-data-grid-generator": "^5.8.0",
     "@mui/x-data-grid-pro": "^5.8.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.5",
     "babel": "^5.8.23",
     "babel-core": "^5.0.0",
     "babel-loader": "^8.2.2",

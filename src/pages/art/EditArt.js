@@ -101,7 +101,7 @@ export default function EditArt() {
       formik.setFieldValue("description", value.data.descr, false)
       formik.setFieldValue("h", value.data.pictureSize.height, false)
       formik.setFieldValue("w", value.data.pictureSize.width, false)
-      setShow(value.data.show)
+      setShow(value.data.show === 1)
       if( value.data.info !== undefined ){
         setVal(value.data.info.map((v) => {
           return { id: randomId(), type: v.type, value: v.value }
@@ -188,8 +188,8 @@ export default function EditArt() {
                   }}/>
 
                   <FormControlLabel control={<Switch checked={show} onChange={(e) => {
+                    http.post(`http://95.163.213.222/api/v1/pictures/${values.id}/public`, {})
                     setShow(e.target.checked)
-                    http.post(`http://95.163.213.222/api/v1/pictures/${location.pathname.split('/')[location.pathname.split('/').length - 1]}/public`, {})
                   }}/>} label="Опубликован" />
 
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>

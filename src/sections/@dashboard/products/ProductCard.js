@@ -25,7 +25,7 @@ ShopProductCard.propTypes = {
   product: PropTypes.object
 };
 
-export default function ShopProductCard({ product }) {
+export default function ShopProductCard({ product, url }) {
   const { name, picture, id} = product;
   return (
     <Card>
@@ -49,7 +49,7 @@ export default function ShopProductCard({ product }) {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Link to={`/dashboard/edit_art/${id}`} color="inherit" underline="hover" component={RouterLink}>
+        <Link to={`${url}/${id}`} color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
             {name}
           </Typography>
