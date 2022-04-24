@@ -44,7 +44,6 @@ export default function VideoPicker(state) {
     console.log(newImgs);
     state.onChange(newImgs);
   }
-
   return (
     <div className="container-fluid">
       <br />

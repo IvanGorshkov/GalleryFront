@@ -92,7 +92,6 @@ export default function CreateExhibition() {
           return {type: data.type, value: data.value}
         })
       }).then((value) => {
-        action.setSubmitting(false)
         if (imageDidChange) {
           const formData = new FormData();
 
@@ -107,7 +106,13 @@ export default function CreateExhibition() {
             );
           })
 
-          http.post(`http://95.163.213.222/api/v1/exhibitions/${value.data.id}/images`, formData, true)
+          http.post(`http://95.163.213.222/api/v1/exhibitions/${value.data.id}/images`, formData, true).then(()=>{
+            action.setSubmitting(false)
+            navigate('/dashboard/exhibition', { replace: true })
+          })
+        } else  {
+          action.setSubmitting(false)
+          navigate('/dashboard/exhibition', { replace: true })
         }
       }).catch(()=> {
         action.setSubmitting(false)
@@ -321,11 +326,6 @@ export default function CreateExhibition() {
                     setimages(value)
                     setimageDidChange(true)
                   }}/>
-
-                  <FormControlLabel
-                    control={<Switch value="checkedA" {...getFieldProps('publish')} />}
-                    label="Опубликован"
-                  />
 
                   <LoadingButton
                     size="large"

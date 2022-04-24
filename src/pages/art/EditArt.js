@@ -59,6 +59,23 @@ export default function EditArt() {
           })
           http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
         }
+
+        if (videoDidChange) {
+          const formData = new FormData();
+          video.forEach((i) => {
+            formData.append(
+              "video",
+              i.file,
+              i.file.name
+            );
+            formData.append(
+              "video_size",
+              `${i.videoWidth} x ${i.videoHeight}`
+            )
+          })
+          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
+        }
+
       }).catch(()=> {
         action.setSubmitting(false)
       })
@@ -66,7 +83,9 @@ export default function EditArt() {
   });
 
   const deleteHandler = (() => {
-    console.log("alert")
+    http.delete(`http://95.163.213.222/api/v1/pictures/${values.id}`).then(()=> {
+      navigate('/dashboard/arts', { replace: true })
+    })
   })
   const navigate = useNavigate();
   useEffect(()=>{
@@ -93,10 +112,14 @@ export default function EditArt() {
         index += 1
         return {url: val, index: index}
       }))
-      setVideo(["http://95.163.213.222/videos/" + value.data.video].map((val) => {
-        index += 1
-        return {url: val, index: index}
-      }))
+      index = -1
+      console.log(value.data.video)
+      if (value.data.video !== undefined) {
+        setVideo([value.data.video].map((val) => {
+          index += 1
+          return {url: val, index: index}
+        }))
+      }
     })
 
   }, []) // <-- empty dependency array

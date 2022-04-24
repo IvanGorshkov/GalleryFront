@@ -23,11 +23,11 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'gallery', element: <Gallery /> },
-        { path: 'ehibition', element: <Exhibition /> },
+        { path: 'exhibition', element: <Exhibition /> },
         { path: 'new_art', element: <CreateArt /> },
-        { path: 'new_ehibition', element: <CreateExhibition /> },
+        { path: 'new_exhibition', element: <CreateExhibition /> },
         { path: 'edit_art/:id', element: <EditArt /> },
-        { path: 'products', element: <Products /> },
+        { path: 'arts', element: <Products /> },
         { path: 'blog', element: <Blog /> }
       ]
     },

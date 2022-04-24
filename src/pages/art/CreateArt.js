@@ -63,23 +63,27 @@ export default function CreateArt() {
             );
           })
 
-          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true)
+          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true).then(()=> {
+            navigate('/dashboard/arts', { replace: true })
+          })
+        }
+        if (videoDidChange) {
+          const formData = new FormData();
+          video.forEach((i) => {
+            formData.append(
+              "video",
+              i.file,
+              i.file.name
+            );
+            formData.append(
+              "video_size",
+              `${i.videoWidth} x ${i.videoHeight}`
+            )
+          })
+          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
         }
 
-        const formData = new FormData();
-        video.forEach((i) => {
-          formData.append(
-            "video",
-            i.file,
-            i.file.name
-          );
-          formData.append(
-            "video_size",
-            `${i.videoWidth} x ${i.videoHeight}`
-            )
-        })
-        http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
-
+        navigate('/dashboard/arts', { replace: true })
       }).catch(()=> {
         action.setSubmitting(false)
       })
@@ -101,6 +105,7 @@ export default function CreateArt() {
   const [images, setimages] = useState([]);
   const [video, setVideo] = useState([]);
   const [imageDidChange, setimageDidChange] = useState(false);
+  const [videoDidChange, setvideoDidChange] = useState(false);
 
   return (
     <Page title="Новая картина">
@@ -152,12 +157,8 @@ export default function CreateArt() {
 
                   <VideoPicker video={video} onChange={(value)=> {
                     setVideo(value)
+                    setvideoDidChange(true)
                   }}/>
-
-                  <FormControlLabel
-                    control={<Switch value="checkedA" {...getFieldProps('publish')} />}
-                    label="Опубликован"
-                  />
 
                   <LoadingButton
                     size="large"

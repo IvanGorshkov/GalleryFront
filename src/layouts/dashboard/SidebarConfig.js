@@ -13,12 +13,12 @@ const sidebarConfig = [
   },
   {
     title: 'Выставки',
-    path: '/dashboard/ehibition',
+    path: '/dashboard/exhibition',
     icon: getIcon('eva:image-outline')
   },
   {
     title: 'Картины',
-    path: '/dashboard/products',
+    path: '/dashboard/arts',
     icon: getIcon('eva:color-palette-outline')
   }
 ];

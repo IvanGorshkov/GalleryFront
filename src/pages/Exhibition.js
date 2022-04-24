@@ -58,7 +58,7 @@ export default function Exhibition() {
           <Button
             variant="contained"
             component={RouterLink}
-            to="/dashboard/new_ehibition"
+            to="/dashboard/new_exhibition"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             Добавить выставку
