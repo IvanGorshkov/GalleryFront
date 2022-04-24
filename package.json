@@ -6,7 +6,7 @@
   "private": false,
   "scripts": {
     "start": "react-scripts start",
-    "build": "webpack",
+    "build": "npm run build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
