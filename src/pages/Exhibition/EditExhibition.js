@@ -87,7 +87,7 @@ export default function EditExhibition() {
     onSubmit: (values, action) => {
       http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}`, {
         name: values.name,
-        descr: values.description,
+        description: values.description,
         info: val.map((data) => {
           return {type: data.type, value: data.value}
         })
@@ -129,7 +129,7 @@ export default function EditExhibition() {
     http.get(`http://95.163.213.222/api/v1/exhibitions/${location.pathname.split('/')[location.pathname.split('/').length - 1]}`).then(value => {
       formik.setFieldValue("name", value.data.name, false)
       formik.setFieldValue("id", value.data.id, false)
-      formik.setFieldValue("description", value.data.descr, false)
+      formik.setFieldValue("description", value.data.description, false)
       setShow(value.data.show === 1)
       if( value.data.info !== undefined ){
         setVal(value.data.info.map((v) => {
