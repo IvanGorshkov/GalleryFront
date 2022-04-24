@@ -8,6 +8,11 @@ module.exports = {
   output: {
     filename: 'react-bundle.js',
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css'
+    }),
+    ],
   module: {
     rules : [
       { test: /\.js?/, loader: 'babel-loader', exclude: /node_modules/ },
