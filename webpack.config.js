@@ -1,6 +1,8 @@
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require('@babel/core/lib/vendor/import-meta-resolve');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -22,6 +24,15 @@ module.exports = {
             },
           },
           'sass-loader',
+        ]
+      },
+      {
+        test: /.(s*)css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader?url=false',
+          'postcss-loader',
+          'sass-loader'
         ]
       },
     ]
