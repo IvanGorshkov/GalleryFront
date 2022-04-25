@@ -96,6 +96,7 @@ export default function EditArt() {
     }
 
     http.get(`http://95.163.213.222/api/v1/pictures/${location.pathname.split('/')[location.pathname.split('/').length - 1]}`).then(value => {
+
       formik.setFieldValue("name", value.data.name, false)
       formik.setFieldValue("id", value.data.id, false)
       formik.setFieldValue("description", value.data.descr, false)
@@ -120,6 +121,9 @@ export default function EditArt() {
           return {url: val, index: index}
         }))
       }
+    }).catch(() => {
+      storage.del("jwt");
+      navigate('/login', { replace: true });
     })
 
   }, []) // <-- empty dependency array

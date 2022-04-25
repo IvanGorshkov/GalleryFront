@@ -36,8 +36,11 @@ export default function Exhibition() {
   const navigate = useNavigate();
   useEffect(()=>{
     http.get("http://95.163.213.222/api/v1/exhibitions").then(value => {
-      console.log(value.data )
+
       setVal(value.data)
+    }).catch(() => {
+      storage.del("jwt");
+      navigate('/login', { replace: true });
     })
 
     const isLogin = storage.get("jwt");

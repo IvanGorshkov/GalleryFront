@@ -23,6 +23,9 @@ export default function EcommerceShop() {
   useEffect(()=>{
     http.get("http://95.163.213.222/api/v1/pictures").then(value => {
       setVal(value.data)
+    }).catch(() => {
+      storage.del("jwt");
+      navigate('/login', { replace: true });
     })
     const isLogin = storage.get("jwt");
     if (isLogin == null) {

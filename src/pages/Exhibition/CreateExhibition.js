@@ -36,12 +36,8 @@ import { filter } from 'lodash';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
+  { id: 'img', label: 'Изображение', alignRight: false },
+  { id: 'name', label: 'Название', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -77,6 +73,8 @@ function applySortFilter(array, comparator, query) {
 
 
 export default function CreateExhibition() {
+  let [arts, setArts] = useState([])
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -85,11 +83,15 @@ export default function CreateExhibition() {
       spetification: [],
     },
     onSubmit: (values, action) => {
+      console.log(selected)
       http.post(`http://95.163.213.222/api/v1/exhibitions`, {
         name: values.name,
-        descr: values.description,
+        description: values.description,
         info: val.map((data) => {
           return {type: data.type, value: data.value}
+        }),
+        content: selected.map((value) => {
+          return {id: value}
         })
       }).then((value) => {
         if (imageDidChange) {
@@ -126,6 +128,12 @@ export default function CreateExhibition() {
     if (isLogin == null) {
       navigate('/login', { replace: true });
     }
+    http.get("http://95.163.213.222/api/v1/pictures").then(value => {
+      setArts(value.data.map((v) => {
+        return {id: v.id, name: v.name, picture: v.picture}
+      }))
+      console.log(arts)
+    })
   }, []) // <-- empty dependency array
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
@@ -151,18 +159,19 @@ export default function CreateExhibition() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = arts.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    console.log(selectedIndex)
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -174,6 +183,7 @@ export default function CreateExhibition() {
       );
     }
     setSelected(newSelected);
+    console.log(2, newSelected)
   };
 
   const handleChangePage = (event, newPage) => {
@@ -189,10 +199,9 @@ export default function CreateExhibition() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - arts.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
+  const filteredUsers = applySortFilter(arts, getComparator(order, orderBy), filterName);
   const isUserNotFound = filteredUsers.length === 0;
 
 
@@ -240,7 +249,7 @@ export default function CreateExhibition() {
                             order={order}
                             orderBy={orderBy}
                             headLabel={TABLE_HEAD}
-                            rowCount={USERLIST.length}
+                            rowCount={arts.length}
                             numSelected={selected.length}
                             onRequestSort={handleRequestSort}
                             onSelectAllClick={handleSelectAllClick}
@@ -249,9 +258,8 @@ export default function CreateExhibition() {
                             {filteredUsers
                               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                               .map((row) => {
-                                const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                                const isItemSelected = selected.indexOf(name) !== -1;
-
+                                const { id, name, picture } = row;
+                                const isItemSelected = selected.indexOf(id) !== -1;
                                 return (
                                   <TableRow
                                     hover
@@ -264,39 +272,17 @@ export default function CreateExhibition() {
                                     <TableCell padding="checkbox">
                                       <Checkbox
                                         checked={isItemSelected}
-                                        onChange={(event) => handleClick(event, name)}
+                                        onChange={(event) => handleClick(event, id)}
                                       />
                                     </TableCell>
                                     <TableCell component="th" scope="row" padding="none">
-                                      <Stack direction="row" alignItems="center" spacing={2}>
-                                        <Avatar alt={name} src={avatarUrl} />
-                                        <Typography variant="subtitle2" noWrap>
-                                          {name}
-                                        </Typography>
-                                      </Stack>
+                                        <Avatar alt={name} src={picture} />
                                     </TableCell>
-                                    <TableCell align="left">{company}</TableCell>
-                                    <TableCell align="left">{role}</TableCell>
-                                    <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                                    <TableCell align="left">
-                                      <Label
-                                        variant="ghost"
-                                        color={(status === 'banned' && 'error') || 'success'}
-                                      >
-                                        {sentenceCase(status)}
-                                      </Label>
-                                    </TableCell>
-
-                                    <TableCell align="right">
-                                      <UserMoreMenu />
-                                    </TableCell>
+                                    <TableCell align="left">{name}</TableCell>
                                   </TableRow>
                                 );
                               })}
-                            {emptyRows > 0 && (
-                              <TableRow style={{ height: 53 * emptyRows }}>
-                                <TableCell colSpan={6} />
-                              </TableRow>
+                            {emptyRows > 0 && (<></>
                             )}
                           </TableBody>
                           {isUserNotFound && (
@@ -315,7 +301,8 @@ export default function CreateExhibition() {
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25]}
                       component="div"
-                      count={USERLIST.length}
+                      labelRowsPerPage={"Картин на странице:"}
+                      count={arts.length}
                       rowsPerPage={rowsPerPage}
                       page={page}
                       onPageChange={handleChangePage}

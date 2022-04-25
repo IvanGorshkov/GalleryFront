@@ -49,6 +49,7 @@ export default function CreateArt() {
         }
       }).then((value) => {
         action.setSubmitting(false)
+
         if (imageDidChange) {
           const formData = new FormData();
 

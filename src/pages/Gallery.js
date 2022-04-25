@@ -83,6 +83,9 @@ export default function Gallery() {
           index += 1
           return {url: val, index: index}
         }))
+      }).catch(() => {
+        storage.del("jwt");
+        navigate('/login', { replace: true });
       })
     const isLogin = storage.get("jwt");
     if (isLogin == null) {
