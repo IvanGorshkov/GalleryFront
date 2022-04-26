@@ -11,7 +11,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import { ru } from 'react-date-range/dist/locale'; // theme css file
 
-export default function CalendarsDateRangePicker() {
+export default function CalendarsDateRangePicker(props) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -20,11 +20,23 @@ export default function CalendarsDateRangePicker() {
     endDate: endDate,
     key: 'selection',
   }
+  const updatePendingValue = (newValue) => {
+    newValue.forEach((element, index) => {
+      if (newValue[index] != null) {
+        newValue[index] = moment(element).format('yyyy-MM-DD');
+      }
+    });
+    setValue(newValue);
+  };
 
   console.log(selectionRange);
   function handleSelect(ranges){
     setStartDate(ranges.selection.startDate);
     setEndDate(ranges.selection.endDate);
+    props.onChange(
+      moment(ranges.selection.startDate).format('yyyy/MM/DD'),
+      moment(ranges.selection.endDate).format('yyyy/MM/DD'),
+      )
   }
 
   return (

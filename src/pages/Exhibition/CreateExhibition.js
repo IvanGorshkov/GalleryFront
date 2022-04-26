@@ -74,12 +74,17 @@ export default function CreateExhibition() {
       spetification: [],
     },
     onSubmit: (values, action) => {
+      let info = val.map((data) => {
+        return {type: data.type, value: data.value}
+      })
+      console.log(info)
+      info.push({type: "Начало", value: start}, {type: "Конец", value: endD})
+      console.log(info)
+
       http.post(`http://95.163.213.222/api/v1/exhibitions`, {
         name: values.name,
         description: values.description,
-        info: val.map((data) => {
-          return {type: data.type, value: data.value}
-        }),
+        info: info,
         content: selected.map((value) => {
           return {id: value}
         })
@@ -131,6 +136,8 @@ export default function CreateExhibition() {
   let [val, setVal] = useState({...getFieldProps('spetification')}.value)
 
   const [images, setimages] = useState([]);
+  const [start, setStart] = useState("");
+  const [endD, setEndD] = useState("");
   const [imageDidChange, setimageDidChange] = useState(false);
 
 
@@ -221,6 +228,15 @@ export default function CreateExhibition() {
                     variant="outlined"
                     {...getFieldProps('description')}
                   />
+
+                  <Typography variant="h4">Срок проведения выставки</Typography>
+                  <CalendarsDateRangePicker start={start} end={endD} onChange={(newStart, newEnd)=> {
+                    setStart(newStart)
+                    setEndD(newEnd)
+                    console.log(start, newEnd)
+                  }
+                  } />
+
 
                   <FullFeaturedCrudGrid value={val} onChange={(value)=> {
                       setVal(value)
