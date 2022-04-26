@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
 import moment from "moment"
-import TextField from "@material-ui/core/TextField";
-import {
-  LocalizationProvider, MobileDateRangePicker, StaticDateRangePicker
-} from '@material-ui/pickers';
-import DateFnsUtils from "@material-ui/pickers/adapter/date-fns";
-import Box from '@mui/material/Box';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
