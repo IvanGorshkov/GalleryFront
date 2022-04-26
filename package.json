@@ -30,8 +30,6 @@
     }
   },
   "dependencies": {
-    "react-date-range": "^1.4.0",
-    "moment": "^2.29.3",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@faker-js/faker": "^6.0.0-alpha.7",
@@ -41,10 +39,6 @@
     "@mui/lab": "^5.0.0-alpha.69",
     "@mui/material": "^5.4.2",
     "@mui/utils": "^5.4.2",
-    "@mui/x-data-grid-generator": "^5.8.0",
-    "@mui/x-data-grid-pro": "^5.8.0",
-    "@mui/x-date-pickers": "^5.0.0-alpha.0",
-    "@mui/x-date-pickers-pro": "^5.0.0-alpha.2",
     "@testing-library/jest-dom": "^5.16.2",
     "apexcharts": "^3.33.1",
     "autoprefixer": "^10.4.5",
@@ -80,15 +74,15 @@
     "webpack-cli": "^4.5.0",
     "webpack-merge": "^5.8.0",
     "webpack-pwa-manifest": "^4.3.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "react-date-range": "^1.4.0",
+    "moment": "^2.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/eslint-parser": "^7.17.0",
     "@mui/x-data-grid-generator": "^5.8.0",
     "@mui/x-data-grid-pro": "^5.8.0",
-    "@mui/x-date-pickers": "^5.0.0-alpha.0",
-    "@mui/x-date-pickers-pro": "^5.0.0-alpha.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.5",
     "babel": "^5.8.23",
     "babel-core": "^5.0.0",
