@@ -47,13 +47,13 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
     <RootStyle>
       <Stack spacing={2}>
       <Typography component="div" variant="subtitle1" >
-        {numSelected} selected
+        {numSelected} выбрано
       </Typography>
 
       <SearchStyle
         value={filterName}
         onChange={onFilterName}
-        placeholder="Поиск выставок"
+        placeholder="Поиск картин"
         startAdornment={
           <InputAdornment position="start">
             <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />

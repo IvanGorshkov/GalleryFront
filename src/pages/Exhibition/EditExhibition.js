@@ -84,6 +84,7 @@ export default function EditExhibition() {
       http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}`, {
         name: values.name,
         description: values.description,
+        show: show === true ? 1 : -1,
         info: val.map((data) => {
           return {type: data.type, value: data.value}
         }),
@@ -143,15 +144,17 @@ export default function EditExhibition() {
           return { url: val, index: index }
         }))
       }
-      if (value.data.context !== undefined) {
-        setSelected(value.data.context.map((value) => {
+      if (value.data.content !== undefined) {
+        setSelected(value.data.content.map((value) => {
           return value.id
         }))
+        console.log("S", selected)
       }
       http.get("http://95.163.213.222/api/v1/pictures").then(value => {
         setArts(value.data.map((v) => {
           return {id: v.id, name: v.name, picture: v.picture}
         }))
+        console.log("A", arts)
       })
 
     }).catch(() => {

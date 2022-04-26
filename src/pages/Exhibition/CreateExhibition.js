@@ -5,33 +5,24 @@ import {
   Typography,
   Stack,
   TextField,
-  InputAdornment,
-  IconButton,
   Card,
-  Switch,
-  FormControlLabel, TableContainer, Table, TableBody, TableRow, TableCell, Checkbox, Avatar, TablePagination
+  TableContainer, Table, TableBody, TableRow, TableCell, Checkbox, Avatar, TablePagination
 } from '@mui/material';
 // components
 import { Form, FormikProvider, useFormik } from 'formik';
 import { LoadingButton } from '@mui/lab';
-import {
-  randomId
-} from '@mui/x-data-grid-generator';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Page from '../../components/Page';
 import FullFeaturedCrudGrid from '../../components/MyDataGrid';
 import ImagePicker from '../../components/ImagePicker';
-import DragableList from '../../components/DragableList';
 import { storage } from '../../utils/localStorage';
 import { http } from '../../utils/http';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import Scrollbar from '../../components/Scrollbar';
-import USERLIST from '../../_mocks_/user';
-import Label from '../../components/Label';
-import { sentenceCase } from 'change-case';
 import SearchNotFound from '../../components/SearchNotFound';
 import { filter } from 'lodash';
+import CalendarsDateRangePicker from '../../components/DatePicker';
 
 // ----------------------------------------------------------------------
 
@@ -83,7 +74,6 @@ export default function CreateExhibition() {
       spetification: [],
     },
     onSubmit: (values, action) => {
-      console.log(selected)
       http.post(`http://95.163.213.222/api/v1/exhibitions`, {
         name: values.name,
         description: values.description,
@@ -231,6 +221,7 @@ export default function CreateExhibition() {
                     variant="outlined"
                     {...getFieldProps('description')}
                   />
+
                   <FullFeaturedCrudGrid value={val} onChange={(value)=> {
                       setVal(value)
                     }
