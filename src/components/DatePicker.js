@@ -34,8 +34,8 @@ export default function CalendarsDateRangePicker(props) {
     setStartDate(ranges.selection.startDate);
     setEndDate(ranges.selection.endDate);
     props.onChange(
-      moment(ranges.selection.startDate).format('yyyy/MM/DD'),
-      moment(ranges.selection.endDate).format('yyyy/MM/DD'),
+      moment(ranges.selection.startDate).format('yyyy-MM-DD'),
+      moment(ranges.selection.endDate).format('yyyy-MM-DD'),
       )
   }
 
