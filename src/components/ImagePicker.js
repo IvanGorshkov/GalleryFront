@@ -58,10 +58,12 @@ export default function ImagePicker(state) {
     <div className="container-fluid">
       <br />
       {/* INPUT IMAGES */}
-      <label className="btn">
+      <label className="btn btn-success" >
         <span>Добавить фото</span>
         <input hidden type="file" multiple accept=".jpg, .jpeg, .png"  onChange={changeInput} />
       </label>
+      <br />
+      <br />
 
       {/* VIEW IMAGES */}
       <div className="row">

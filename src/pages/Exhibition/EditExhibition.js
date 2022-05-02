@@ -32,6 +32,8 @@ import Label from '../../components/Label';
 import { sentenceCase } from 'change-case';
 import SearchNotFound from '../../components/SearchNotFound';
 import { filter } from 'lodash';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -73,6 +75,10 @@ function applySortFilter(array, comparator, query) {
 
 export default function EditExhibition() {
   let [arts, setArts] = useState([])
+  const schema = Yup.object().shape({
+    name: Yup.string().required('"Название выставки" должно быть не пустым'),
+  });
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -80,6 +86,7 @@ export default function EditExhibition() {
       publish: false,
       spetification: [],
     },
+    validationSchema: schema,
     onSubmit: (values, action) => {
       http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}`, {
         name: values.name,
@@ -92,9 +99,11 @@ export default function EditExhibition() {
           return {id: value}
         })
       }).then((value) => {
+        toast.success("Выставка успешно обновлена");
         if (imageDidChange) {
           const formData = new FormData();
 
+          toast.info("Идёт загрузка фото");
           images.forEach((i) => {
             if (i.file === undefined) {
               return
@@ -107,14 +116,18 @@ export default function EditExhibition() {
           })
 
           http.post(`http://95.163.213.222/api/v1/exhibitions/${value.data.id}/images`, formData, true).then(()=>{
+            toast.success("Фотографии загружены");
             action.setSubmitting(false)
             navigate('/dashboard/exhibition', { replace: true })
+          }).catch(()=>{
+            toast.error("Ошибка при загрузки фотографий");
           })
         } else  {
           action.setSubmitting(false)
           navigate('/dashboard/exhibition', { replace: true })
         }
       }).catch(()=> {
+        toast.error("Произошла ошибка");
         action.setSubmitting(false)
       })
     }
@@ -231,7 +244,7 @@ export default function EditExhibition() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - arts.length) : 0;
 
   const filteredUsers = applySortFilter(arts, getComparator(order, orderBy), filterName);
-  const isUserNotFound = filteredUsers.length === 0;
+  const isUserNotFound = filteredUsers.length === 0 && arts.length !== 0;
 
   const deleteHandler = (() => {
     http.delete(`http://95.163.213.222/api/v1/exhibitions/${values.id}`).then(()=> {
@@ -252,8 +265,10 @@ export default function EditExhibition() {
                     <TextField
                       fullWidth
                       type="text"
-                      label="Название выставки"
+                      label="Название выставки*"
                       {...getFieldProps('name')}
+                      error={Boolean(touched.name && errors.name)}
+                      helperText={touched.name && errors.name}
                     />
                   </Stack>
 
@@ -348,9 +363,17 @@ export default function EditExhibition() {
                   }}/>
 
                   <FormControlLabel control={<Switch checked={show} onChange={(e) => {
-                    http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}/public`, {})
+                    http.post(`http://95.163.213.222/api/v1/exhibitions/${values.id}/public`, {}).then(() => {
+                      if (e.target.checked === true) {
+                        toast.success("Выставка доступа зрителям");
+                      } else  {
+                        toast.success("Выставка стала недоступной для зрителей");
+                      }
+                    }).catch(()=> {
+                      toast.error("Неизвестная ошибка");
+                    })
                     setShow(e.target.checked)
-                  }}/>} label="Опубликован" />
+                  }}/>} label="Доступна для зрителей" />
 
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                     <LoadingButton

@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import React from 'react';
 // material
-import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Typography, Link } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/Iconify';
 import { storage } from '../../../utils/localStorage';
 import { http } from '../../../utils/http';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -28,8 +28,8 @@ export default function RegisterForm() {
 
   const RegisterSchema = Yup.object().shape({
     museum: Yup.string().required('Название музея обязтаельно'),
-    login: Yup.string().required('Email is required'),
-    password: Yup.string().required('Password is required')
+    login: Yup.string().required('Поле логин обязательно'),
+    password: Yup.string().required('Поле пароль обязательно')
   });
 
   const formik = useFormik({
@@ -74,7 +74,7 @@ export default function RegisterForm() {
             <TextField
               fullWidth
               type="text"
-              label="Название Музея"
+              label="Название Музея*"
               {...getFieldProps('museum')}
               error={Boolean(touched.museum && errors.museum)}
               helperText={touched.museum && errors.museum}
@@ -85,7 +85,7 @@ export default function RegisterForm() {
             fullWidth
             autoComplete="username"
             type="text"
-            label="Логин"
+            label="Логин*"
             {...getFieldProps('login')}
             error={Boolean(touched.login && errors.login)}
             helperText={touched.login && errors.login}
@@ -95,7 +95,7 @@ export default function RegisterForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="Пароль*"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -119,6 +119,18 @@ export default function RegisterForm() {
           >
             Регистрация
           </LoadingButton>
+          <Typography
+            variant="body1"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              mt: { md: -2 }
+            }}
+          >
+            Уже есть аккаунт? &nbsp;
+            <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
+              Войти
+            </Link>
+          </Typography>
         </Stack>
       </Form>
     </FormikProvider>

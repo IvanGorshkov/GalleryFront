@@ -23,6 +23,8 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import { filter } from 'lodash';
 import CalendarsDateRangePicker from '../../components/DatePicker';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -65,6 +67,9 @@ function applySortFilter(array, comparator, query) {
 
 export default function CreateExhibition() {
   let [arts, setArts] = useState([])
+  const schema = Yup.object().shape({
+    name: Yup.string().required('"Название выставки" должно быть не пустым'),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -73,7 +78,13 @@ export default function CreateExhibition() {
       publish: false,
       spetification: [],
     },
+    validationSchema: schema,
     onSubmit: (values, action) => {
+      if (start === "") {
+        toast.error("Должны быть сроки выставки")
+        action.setSubmitting(false)
+        return
+      }
       let info = val.map((data) => {
         return {type: data.type, value: data.value}
       })
@@ -89,9 +100,11 @@ export default function CreateExhibition() {
           return {id: value}
         })
       }).then((value) => {
+        toast.success("Выставка успешно создалась");
         if (imageDidChange) {
           const formData = new FormData();
 
+          toast.info("Идёт загрузка фото");
           images.forEach((i) => {
             if (i.file === undefined) {
               return
@@ -103,15 +116,19 @@ export default function CreateExhibition() {
             );
           })
 
-          http.post(`http://95.163.213.222/api/v1/exhibitions/${value.data.id}/images`, formData, true).then(()=>{
+          http.post(`http://95.163.213.222/api/v1/exhibitions/${value.data.id}/images`, formData, true).then(() => {
+            toast.success("Фотографии загружены");
             action.setSubmitting(false)
             navigate('/dashboard/exhibition', { replace: true })
+          }).catch(()=>{
+            toast.error("Ошибка при загрузки фотографий");
           })
         } else  {
           action.setSubmitting(false)
           navigate('/dashboard/exhibition', { replace: true })
         }
       }).catch(()=> {
+        toast.error("Произошла ошибка");
         action.setSubmitting(false)
       })
     }
@@ -180,7 +197,6 @@ export default function CreateExhibition() {
       );
     }
     setSelected(newSelected);
-    console.log(2, newSelected)
   };
 
   const handleChangePage = (event, newPage) => {
@@ -199,7 +215,7 @@ export default function CreateExhibition() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - arts.length) : 0;
 
   const filteredUsers = applySortFilter(arts, getComparator(order, orderBy), filterName);
-  const isUserNotFound = filteredUsers.length === 0;
+  const isUserNotFound = filteredUsers.length === 0 && arts.length !== 0;
 
 
 
@@ -216,8 +232,10 @@ export default function CreateExhibition() {
                     <TextField
                       fullWidth
                       type="text"
-                      label="Название выставки"
+                      label="Название выставки*"
                       {...getFieldProps('name')}
+                      error={Boolean(touched.name && errors.name)}
+                      helperText={touched.name && errors.name}
                     />
                   </Stack>
 
@@ -233,9 +251,9 @@ export default function CreateExhibition() {
                   <CalendarsDateRangePicker start={start} end={endD} onChange={(newStart, newEnd)=> {
                     setStart(newStart)
                     setEndD(newEnd)
-                    console.log(start, newEnd)
                   }
-                  } />
+                  }
+                  />
 
 
                   <FullFeaturedCrudGrid value={val} onChange={(value)=> {

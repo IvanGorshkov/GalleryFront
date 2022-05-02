@@ -15,6 +15,8 @@ import {
 } from '@mui/x-data-grid-pro';
 
 import { randomId } from '@mui/x-data-grid-generator';
+import { Stack } from '@mui/material';
+import { nlNL, ruRU } from '@mui/x-data-grid-pro';
 
 function EditToolbar(props) {
   const { apiRef } = props;
@@ -36,7 +38,7 @@ function EditToolbar(props) {
   return (
     <GridToolbarContainer>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Добавить запись
+        Добавить атрибуты
       </Button>
     </GridToolbarContainer>
   );
@@ -174,13 +176,19 @@ export default function FullFeaturedCrudGrid(myprops) {
         }
         processRowUpdate={processRowUpdate}
         components={{
-          Toolbar: EditToolbar
+          Toolbar: EditToolbar,
+          NoRowsOverlay: () => (
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              Пока нет атрибутов
+            </Stack>
+          ),
         }}
         componentsProps={{
           toolbar: { apiRef }
         }}
         hideFooter
         experimentalFeatures={{ newEditingApi: true }}
+        localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
   );

@@ -41,10 +41,6 @@ export default function Login() {
   return (
     <RootStyle title="Вход">
       <AuthLayout>
-        Нет аккаунта? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
-          Регистрация
-        </Link>
       </AuthLayout>
       <Container maxWidth="sm">
         <ContentStyle>

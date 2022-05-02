@@ -25,8 +25,20 @@ import ImagePicker from '../../components/ImagePicker';
 import { storage } from '../../utils/localStorage';
 import { http } from '../../utils/http';
 import VideoPicker from '../../components/VideoPicker';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 export default function CreateArt() {
+  const schema = Yup.object().shape({
+    name: Yup.string().required('У картины должно быть название'),
+    w: Yup.number()
+      .min(1, 'Число должно быть положительным')
+      .required('У картины должна быть ширина'),
+    h: Yup.number()
+      .min(1, 'Число должно быть положительным')
+      .required('У картины должна быть высота'),
+  });
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -36,6 +48,7 @@ export default function CreateArt() {
       w: 0,
       h: 0
     },
+    validationSchema: schema,
     onSubmit: (values, action) => {
       http.post(`http://95.163.213.222/api/v1/pictures`, {
         name: values.name,
@@ -49,8 +62,10 @@ export default function CreateArt() {
         }
       }).then((value) => {
         action.setSubmitting(false)
+        toast.success("Картина была создана");
 
         if (imageDidChange) {
+          toast.info("Идёт загрузка фото");
           const formData = new FormData();
 
           images.forEach((i) => {
@@ -65,10 +80,14 @@ export default function CreateArt() {
           })
 
           http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/images`, formData, true).then(()=> {
+            toast.success("Фотографии загружены");
             navigate('/dashboard/arts', { replace: true })
+          }).catch(()=>{
+            toast.error("Ошибка при загрузки фотографий");
           })
         }
         if (videoDidChange) {
+          toast.info("Идёт загрузка видео");
           const formData = new FormData();
           video.forEach((i) => {
             formData.append(
@@ -81,11 +100,15 @@ export default function CreateArt() {
               `${i.videoWidth} x ${i.videoHeight}`
             )
           })
-          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true)
+          http.post(`http://95.163.213.222/api/v1/pictures/${value.data.id}/videos`, formData, true).then(()=> {
+            toast.success("Видео загружено");
+            navigate('/dashboard/arts', { replace: true })
+          }).catch(()=>{
+            toast.error("Ошибка при загрузки видео");
+          })
         }
-
-        navigate('/dashboard/arts', { replace: true })
       }).catch(()=> {
+        toast.error("Произошла ошибка");
         action.setSubmitting(false)
       })
     }
@@ -121,22 +144,28 @@ export default function CreateArt() {
                     <TextField
                       fullWidth
                       type="text"
-                      label="Название картины"
+                      label="Название картины*"
                       {...getFieldProps('name')}
+                      error={Boolean(touched.name && errors.name)}
+                      helperText={touched.name && errors.name}
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                     <TextField
                       fullWidth
                       type="number"
-                      label="Ширина"
+                      label="Ширина (см)*"
                       {...getFieldProps('w')}
+                      error={Boolean(touched.w && errors.w)}
+                      helperText={touched.w && errors.w}
                     />
                     <TextField
                       fullWidth
                       type="number"
-                      label="Высота"
+                      label="Высота (см)*"
                       {...getFieldProps('h')}
+                      error={Boolean(touched.h && errors.h)}
+                      helperText={touched.h && errors.h}
                     />
                   </Stack>
 

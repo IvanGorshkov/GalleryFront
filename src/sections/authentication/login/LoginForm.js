@@ -10,7 +10,7 @@ import {
   TextField,
   IconButton,
   InputAdornment,
-  FormControlLabel
+  FormControlLabel, Typography
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
@@ -75,7 +75,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             type="text"
-            label="Логин"
+            label="Логин*"
             {...getFieldProps('login')}
             error={Boolean(touched.login && errors.login)}
             helperText={touched.login && errors.login}
@@ -85,7 +85,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Пароль"
+            label="Пароль*"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -108,6 +108,18 @@ export default function LoginForm() {
           >
             Войти
           </LoadingButton>
+          <Typography
+            variant="body1"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              mt: { md: -2 }
+            }}
+          >
+            Нет аккаунта? &nbsp;
+            <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
+              Регистрация
+            </Link>
+          </Typography>
         </Stack>
       </Form>
     </FormikProvider>

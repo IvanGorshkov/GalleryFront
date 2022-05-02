@@ -48,10 +48,13 @@ export default function VideoPicker(state) {
     <div className="container-fluid">
       <br />
       {/* INPUT IMAGES */}
-      <label className="btn">
+      <label className="btn btn-success">
         <span>Добавить видео</span>
         <input hidden type="file" multiple accept=".mp4"  onChange={changeInput} />
       </label>
+
+      <br />
+      <br />
 
       {/* VIEW IMAGES */}
       <div className="row">

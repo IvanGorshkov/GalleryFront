@@ -41,10 +41,6 @@ export default function Register() {
   return (
     <RootStyle title="Register | Minimal-UI">
       <AuthLayout>
-       Уже есть аккаунт? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
-          Войти
-        </Link>
       </AuthLayout>
 
       <Container>

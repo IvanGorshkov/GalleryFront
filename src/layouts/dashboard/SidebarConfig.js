@@ -12,14 +12,14 @@ const sidebarConfig = [
     icon: getIcon('eva:home-outline')
   },
   {
-    title: 'Выставки',
-    path: '/dashboard/exhibition',
-    icon: getIcon('eva:image-outline')
-  },
-  {
     title: 'Картины',
     path: '/dashboard/arts',
     icon: getIcon('eva:color-palette-outline')
+  },
+  {
+    title: 'Выставки',
+    path: '/dashboard/exhibition',
+    icon: getIcon('eva:image-outline')
   }
 ];
 

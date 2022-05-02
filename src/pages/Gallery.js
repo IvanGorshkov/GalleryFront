@@ -23,6 +23,7 @@ import ImagePicker from '../components/ImagePicker';
 import { storage } from '../utils/localStorage';
 import { http } from '../utils/http';
 import NotificationsPopover from '../layouts/dashboard/NotificationsPopover';
+import { toast } from 'react-toastify';
 
 export default function Gallery() {
   const formik = useFormik({
@@ -42,13 +43,14 @@ export default function Gallery() {
         })
       }).then(() => {
         action.setSubmitting(false)
+        toast.success("Изменения сохранены");
         if (imageDidChange) {
           const formData = new FormData();
+          toast.info("Идёт загрузка фото");
 
           console.log(images[0])
 
           images.forEach((i) => {
-            console.log(i)
             if (i.file === undefined) {
               return
             }
@@ -59,7 +61,9 @@ export default function Gallery() {
             );
           })
 
-          http.post(`http://95.163.213.222/api/v1/museums/${values.id}/images`, formData, true)
+          http.post(`http://95.163.213.222/api/v1/museums/${values.id}/images`, formData, true).then(() => {
+            toast.success("Фотографии обнавлены");
+          })
         }
       })
     }
@@ -135,9 +139,17 @@ export default function Gallery() {
                   }}/>
 
                   <FormControlLabel control={<Switch checked={show} onChange={(e) => {
-                    http.post(`http://95.163.213.222/api/v1/museums/${values.id}/public`, {})
+                    http.post(`http://95.163.213.222/api/v1/museums/${values.id}/public`, {}).then(() => {
+                      if (e.target.checked === true) {
+                        toast.success("Галерея доступа зрителям");
+                      } else  {
+                        toast.success("Галерея стала недоступной для зрителей");
+                      }
+                    }).catch(()=> {
+                      toast.error("Неизвестная ошибка");
+                    })
                     setShow(e.target.checked)
-                  }}/>} label="Опубликован" />
+                  }}/>} label="Доступна для зрителей" />
 
                   <LoadingButton
                     size="large"
