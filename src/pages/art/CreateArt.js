@@ -44,7 +44,12 @@ export default function CreateArt() {
       name: '',
       description: '',
       publish: false,
-      spetification: [],
+      spetification: [
+        { id: randomId(), type: "Автор", value: ""},
+        { id: randomId(), type: "Год создания", value: ""},
+        { id: randomId(), type: "Техника", value: ""},
+        { id: randomId(), type: "Место нахождения", value: ""},
+      ],
       w: 0,
       h: 0
     },
