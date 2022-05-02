@@ -18,6 +18,7 @@ import Iconify from '../../../components/Iconify';
 import { http } from '../../../utils/http';
 import { storage } from '../../../utils/localStorage';
 import { randomId } from '@mui/x-data-grid-generator';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,7 @@ export default function LoginForm() {
         }
       }).catch((error) => {
         console.log(error)
+        toast.error("Неправильный логин или пароль");
         actions.setSubmitting(false);
       });
     }

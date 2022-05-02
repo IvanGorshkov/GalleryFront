@@ -50,7 +50,6 @@ export default function Login() {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Введите свои данные ниже.</Typography>
           </Stack>
-
           <LoginForm />
         </ContentStyle>
       </Container>
